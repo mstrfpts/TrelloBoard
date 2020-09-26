@@ -1,0 +1,49 @@
+.Board {
+  display: flex;
+  justify-content: space-around;
+  background-color: rgb(19, 141, 241);
+  height: 100vh;
+}
+
+.Board > div:nth-child(n + 2) {
+  margin-left: 0px;
+}
+
+.Category {
+  background-color: lightgrey;
+  margin: 5px;
+  padding: 5px;
+  min-width: 100px;
+  display: flex;
+  flex-direction: column;
+  flex: auto;
+  align-items: center;
+  border-radius: 5px;
+}
+
+.CategoryTitle {
+  font-weight: bolder;
+  margin-bottom: 25px;
+}
+
+.Task {
+  background-color: azure;
+  border-radius: 6px;
+  padding: 6px;
+  width: 84%;
+  margin: 8px;
+}
+
+.TaskTitle {
+  font-weight: 600;
+  padding-left: 10px;
+}
+
+.AddTask {
+  position: absolute;
+  bottom: 1px;
+  bottom: 25px;
+  border-radius: 20px;
+  border: none;
+  background-color: slategray;
+}
