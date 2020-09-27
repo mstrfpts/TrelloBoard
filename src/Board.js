@@ -6,7 +6,24 @@ import "./Board.css";
 const Board = () => {
   const [showModal, setShowModal] = useState(false);
   const [taskList, setTaskList] = useLocalStorage("taskList", [
-    { name: "Sample Task one", id: 1, category: "ToDo" },
+    {
+      title: "Sample Task one",
+      description: "Sample Task one Description",
+      id: 1,
+      category: "ToDo",
+    },
+    {
+      title: "Sample Task one",
+      description: "Sample Task one Description",
+      id: 1,
+      category: "Ongoing",
+    },
+    {
+      title: "Sample Task one",
+      description: "Sample Task one Description",
+      id: 1,
+      category: "Complete",
+    },
   ]);
 
   const categoryList = [
