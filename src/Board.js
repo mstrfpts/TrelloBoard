@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import AddTaskModal from "./Modal";
 import { useLocalStorage } from "./CustomHooks";
+import TaskCards from "./TaskCards";
 import "./Board.css";
 
 const Board = () => {
   const [showModal, setShowModal] = useState(false);
+
   const [taskList, setTaskList] = useLocalStorage("taskList", [
     {
       title: "Sample Task one",
@@ -32,6 +34,7 @@ const Board = () => {
     { name: "Complete", id: 3 },
   ];
 
+  //Functions
   const findFreeId = (array) => {
     const sortedArray = array.slice().sort(function (a, b) {
       return a.id - b.id;
@@ -57,6 +60,7 @@ const Board = () => {
     });
   };
 
+  //Components
   const CategoryCard = ({ title }) => {
     return (
       <div className={"Category"}>
@@ -67,15 +71,6 @@ const Board = () => {
         </button>
       </div>
     );
-  };
-
-  const TaskCards = ({ taskList }) => {
-    return taskList.map((task, index) => (
-      <div key={index} className={"Task"}>
-        <div className={"TaskTitle"}>{task.title}</div>
-        <div className={"TaskDesc"}>{`- ${task.description}`}</div>
-      </div>
-    ));
   };
 
   return (

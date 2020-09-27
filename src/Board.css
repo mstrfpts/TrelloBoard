@@ -34,9 +34,17 @@
   margin: 8px;
 }
 
+.Task:hover {
+  cursor: pointer;
+}
+
 .TaskTitle {
   font-weight: 600;
   padding-left: 10px;
+}
+
+.Dnd {
+  background-color: slategrey;
 }
 
 .AddTask {
