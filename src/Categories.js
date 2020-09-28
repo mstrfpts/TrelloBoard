@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import AddTaskModal from "./Modal";
 
 import "./Board.css";
@@ -15,10 +15,6 @@ const Categories = ({
   const dragNode = useRef();
 
   const [dragging, setDragging] = useState(false);
-
-  useEffect(() => {
-    console.log("derd useEffect dragItem update", dragItem);
-  }, [dragItem]);
 
   const filterCategoryTasks = (category) => {
     return taskList.filter((task) => {

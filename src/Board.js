@@ -1,12 +1,9 @@
-import React, { useState, useRef } from "react";
-import AddTaskModal from "./Modal";
+import React from "react";
 import { useLocalStorage } from "./CustomHooks";
-import TaskCards from "./TaskCards";
 import Categories from "./Categories";
 import "./Board.css";
 
 const Board = () => {
-  const [showModal, setShowModal] = useState(false);
   const staticElements = [
     { title: "Drop Here", description: " ", id: 1, category: "ToDo" },
     { title: "Drop Here", description: " ", id: 2, category: "Ongoing" },
@@ -82,25 +79,6 @@ const Board = () => {
   const deleteTask = (taskId) => {
     let newTaskList = taskList.filter((task) => task.id !== taskId);
     setTaskList(newTaskList);
-  };
-
-  const filterCategoryTasks = (category) => {
-    return taskList.filter((task) => {
-      return task.category === category;
-    });
-  };
-
-  //Components
-  const CategoryCard = ({ title }) => {
-    return (
-      <div className={"Category"}>
-        <div className={"CategoryTitle"}>{title}</div>
-        {<TaskCards taskList={filterCategoryTasks(title)} />}
-        <button className={"AddTask"} onClick={() => setShowModal(true)}>
-          +
-        </button>
-      </div>
-    );
   };
 
   return (
