@@ -95,7 +95,7 @@ const Categories = ({
       <div
         draggable
         onDragStart={
-          task.title !== "Tasks" ? (e) => dragStartHandler(e, task) : null
+          task.title !== "Drop Here" ? (e) => dragStartHandler(e, task) : null
         }
         onDragEnter={dragging ? (e) => dragEnterHandler(e, task) : null}
         key={index}
