@@ -47,10 +47,8 @@ const Board = () => {
     const sortedArray = array.slice().sort(function (a, b) {
       return a.id - b.id;
     });
-    console.log("derd filter sorted", sortedArray);
     let previousId = 0;
     for (let element of sortedArray) {
-      console.log("derd sorted array elemnet", element);
       if (element.id !== previousId + 1) {
         return previousId + 1;
       }
@@ -67,12 +65,10 @@ const Board = () => {
   const updateTask = (taskId, targetCategory) => {
     let newTaskList = taskList.map((task, index) => {
       if (task.id === taskId) {
-        console.log("derd, found taskId", task);
         task.category = targetCategory;
       }
       return task;
     });
-    console.log("derd updated new task", newTaskList);
     setTaskList(newTaskList);
   };
 

@@ -23,19 +23,13 @@ const Categories = ({
   };
 
   const dragStartHandler = (e, params) => {
-    console.log("drag start e", e.target);
-    console.log("drag start task", params);
-    //console.log("drag start task", task.title);
-    //console.log("drag start task", task.category);
     dragItem.current = params;
     dragNode.current = e.target;
     dragNode.current.addEventListener("dragend", dragEndHandler);
     setTimeout(() => setDragging(true), 0);
-    console.log("drag start dragItem", dragItem.current);
   };
 
   const dragEndHandler = () => {
-    console.log("derd, drag ending");
     setDragging(false);
 
     dragNode.current.removeEventListener("dragend", dragEndHandler);
