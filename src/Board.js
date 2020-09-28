@@ -79,6 +79,11 @@ const Board = () => {
     setTaskList(newTaskList);
   };
 
+  const deleteTask = (taskId) => {
+    let newTaskList = taskList.filter((task) => task.id !== taskId);
+    setTaskList(newTaskList);
+  };
+
   const filterCategoryTasks = (category) => {
     return taskList.filter((task) => {
       return task.category === category;
@@ -100,21 +105,13 @@ const Board = () => {
 
   return (
     <div>
-      {/*categoryList.map((category) => (
-        <CategoryCard key={category.id} title={category.name} />
-      ))*/}
       <Categories
         addTask={addTask}
         updateTask={updateTask}
+        deleteTask={deleteTask}
         categoryList={categoryList}
         taskList={taskList}
       />
-      {/*<AddTaskModal
-        addTask={addTask}
-        showModal={showModal}
-        setShowModal={setShowModal}
-        categoryList={categoryList}
-      />*/}
     </div>
   );
 };

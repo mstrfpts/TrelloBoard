@@ -32,6 +32,7 @@
   padding: 6px;
   width: 84%;
   margin: 8px;
+  position: relative;
 }
 
 .Task:hover {
@@ -54,4 +55,11 @@
   border-radius: 20px;
   border: none;
   background-color: slategray;
+}
+
+.TaskClose {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  border: none;
 }

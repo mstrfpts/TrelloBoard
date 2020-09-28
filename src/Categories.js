@@ -3,7 +3,13 @@ import AddTaskModal from "./Modal";
 
 import "./Board.css";
 
-const Categories = ({ categoryList, taskList, addTask, updateTask }) => {
+const Categories = ({
+  categoryList,
+  taskList,
+  addTask,
+  updateTask,
+  deleteTask,
+}) => {
   const [showModal, setShowModal] = useState(false);
   const dragItem = useRef();
   const dragNode = useRef();
@@ -42,26 +48,16 @@ const Categories = ({ categoryList, taskList, addTask, updateTask }) => {
   };
 
   const dragEnterHandler = (e, params) => {
-    //console.log("drag enter task", task.title);
-    //console.log("drag enter dragNode", dragNode.current);
-    // console.log("drag enter e", e.target);
-    // console.log("drag enter dragNode", dragNode.current);
-    console.log("drag enter dragitem category ", dragItem.current.category);
-    console.log("drag enter params.category", params.category);
-    console.log("drag enter e target", e.target);
-    console.log("drag enter dragNode.current", dragNode.current);
-
     if (
       dragItem.current.category !== params.category &&
       e.target !== dragNode.current
     ) {
-      console.log("derd drag enter not the same");
-      console.log("derd drag enter task id", dragItem.current.id);
-      console.log("derd drag enter target task category", params.category);
       updateTask(dragItem.current.id, params.category);
-      //console.log("drag enter task", task.title);
-      //console.log("drag enter task", task.category);
     }
+  };
+
+  const taskDeleteHandler = (taskId) => {
+    deleteTask(taskId);
   };
 
   const getStyle = (task) => {
@@ -115,9 +111,18 @@ const Categories = ({ categoryList, taskList, addTask, updateTask }) => {
         >
           {task.title}
         </div>
+
         <div className={"TaskDesc"}>{`${
           task.title !== "Drop Here" ? "-" : ""
         } ${task.description}`}</div>
+        {task.title !== "Drop Here" ? (
+          <button
+            className={"TaskClose"}
+            onClick={() => taskDeleteHandler(task.id)}
+          >
+            x
+          </button>
+        ) : null}
       </div>
     ));
   };
