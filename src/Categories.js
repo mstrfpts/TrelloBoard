@@ -93,7 +93,7 @@ const Categories = ({
   const TaskCards = ({ filteredTaskList }) => {
     return filteredTaskList.map((task, index) => (
       <div
-        draggable
+        draggable={task.title !== "Drop Here" ? true : false}
         onDragStart={
           task.title !== "Drop Here" ? (e) => dragStartHandler(e, task) : null
         }
