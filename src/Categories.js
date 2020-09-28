@@ -109,7 +109,12 @@ const Categories = ({ categoryList, taskList, addTask, updateTask }) => {
         key={index}
         className={dragging ? getStyle(task) : "Task"}
       >
-        <div className={"TaskTitle"}>{task.title}</div>
+        <div
+          className={"TaskTitle"}
+          style={task.title === "Drop Here" ? { minWidth: "200px" } : {}}
+        >
+          {task.title}
+        </div>
         <div className={"TaskDesc"}>{`${
           task.title !== "Drop Here" ? "-" : ""
         } ${task.description}`}</div>
