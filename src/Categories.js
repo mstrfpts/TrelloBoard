@@ -46,6 +46,16 @@ const Categories = ({
     }
   };
 
+  const dragEnterHandler1 = (e, params) => {
+    if (
+      dragItem.current.category !==
+      params.category /*&&
+      e.target !== dragNode.current*/
+    ) {
+      updateTask(dragItem.current.id, params.category);
+    }
+  };
+
   const taskDeleteHandler = (taskId) => {
     deleteTask(taskId);
   };
@@ -63,16 +73,20 @@ const Categories = ({
   };
 
   const CategoryCard = ({ title, setShowModal }) => {
-    let categoryTasks = categoryList.filter(
+    let categoryTaskIds = categoryList.filter(
       (category) => category.name === title
-    )[0].tasks.length;
+    )[0].tasks;
+    let defaultCategoryTasks = taskList.filter((task) => {
+      return task.id === categoryTaskIds[0];
+    });
     return (
       <div
         className={"Category"}
         onDragEnter={
-          dragging && !categoryTasks.length
-            ? (e) => dragEnterHandler(e, dragItem.current)
-            : null
+          /*categoryTaskIds.length === 1
+            ? */ (e) =>
+            dragEnterHandler1(e, defaultCategoryTasks[0])
+          //  : null
         }
       >
         <div className={"CategoryTitle"}>{title}</div>
