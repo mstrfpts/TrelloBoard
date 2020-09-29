@@ -1,12 +1,32 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Form, Button } from "react-bootstrap";
 
-const AddTaskModal = ({ showModal, setShowModal, categoryList, addTask }) => {
+const AddTaskModal = ({
+  showModal,
+  setShowModal,
+  categoryList,
+  addTask,
+  newTask,
+  updateTask,
+  taskToBeUpdated,
+}) => {
   const [taskDetails, setTaskDetails] = useState({
     title: "Task Title",
     description: "Task Description",
     category: categoryList[0].name,
   });
+
+  useEffect(() => {
+    if (!newTask) {
+      setTaskDetails({
+        title: newTask ? "Task Title" : taskToBeUpdated.title,
+        description: newTask ? "Task Description" : taskToBeUpdated.description,
+        category: taskToBeUpdated.category,
+        id: taskToBeUpdated.id,
+      });
+    }
+  }, [newTask]);
+
   const handleClose = () => {
     setShowModal(false);
   };
@@ -23,8 +43,9 @@ const AddTaskModal = ({ showModal, setShowModal, categoryList, addTask }) => {
     setTaskDetails({ ...taskDetails, category: event.target.value });
   };
 
-  const handleClick = () => {
-    addTask(taskDetails);
+  const handleClick = (task) => {
+    console.log("derd handle click task", task);
+    newTask ? addTask(taskDetails) : updateTask(task);
     handleClose();
   };
 
@@ -32,7 +53,7 @@ const AddTaskModal = ({ showModal, setShowModal, categoryList, addTask }) => {
     <>
       <Modal show={showModal} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>New Task</Modal.Title>
+          <Modal.Title>{newTask ? "New Task" : "Update Task"}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           Please enter you task details in the below fields
@@ -41,7 +62,8 @@ const AddTaskModal = ({ showModal, setShowModal, categoryList, addTask }) => {
           <Form.Label>Task Title</Form.Label>
           <Form.Control
             type="text"
-            placeholder={`Enter Task Title`}
+            placeholder={`Enter Task Title pl`}
+            value={newTask ? `Enter Task Title` : taskDetails.title}
             onChange={(e) => taskTitleChangeHandler(e)}
           />
         </Form.Group>
@@ -50,6 +72,7 @@ const AddTaskModal = ({ showModal, setShowModal, categoryList, addTask }) => {
           <Form.Control
             type="text"
             placeholder={`Enter Task Description`}
+            value={newTask ? `Enter Task Description` : taskDetails.description}
             onChange={(e) => taskDescriptionChangeHandler(e)}
           />
         </Form.Group>
@@ -57,6 +80,7 @@ const AddTaskModal = ({ showModal, setShowModal, categoryList, addTask }) => {
           <Form.Label>Category:</Form.Label>
           <Form.Control
             as="select"
+            defaultValue={newTask ? null : taskDetails.category}
             onChange={(e) => taskCategoryChangeHandler(e)}
           >
             {categoryList.map((category, index) => (
@@ -69,7 +93,12 @@ const AddTaskModal = ({ showModal, setShowModal, categoryList, addTask }) => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleClick}>
+          <Button
+            variant="primary"
+            onClick={() => {
+              handleClick(taskDetails);
+            }}
+          >
             Save Changes
           </Button>
         </Modal.Footer>

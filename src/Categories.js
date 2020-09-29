@@ -11,6 +11,8 @@ const Categories = ({
   deleteTask,
 }) => {
   const [showModal, setShowModal] = useState(false);
+  const [newTask, setNewTask] = useState(true);
+  const [taskToBeUpdated, setTaskToBeUpdated] = useState();
   const dragItem = useRef();
   const dragNode = useRef();
 
@@ -72,6 +74,18 @@ const Categories = ({
     }
   };
 
+  const updateTaskHandler = (updateTask) => {
+    console.log("title clicked");
+    setShowModal(true);
+    setNewTask(false);
+    setTaskToBeUpdated(updateTask);
+  };
+
+  const addTaskHandler = () => {
+    setShowModal(true);
+    setNewTask(true);
+  };
+
   const CategoryCard = ({ title, setShowModal }) => {
     let categoryTaskIds = categoryList.filter(
       (category) => category.name === title
@@ -91,7 +105,7 @@ const Categories = ({
       >
         <div className={"CategoryTitle"}>{title}</div>
         {<TaskCards filteredTaskList={filterCategoryTasks(title)} />}
-        <button className={"AddTask"} onClick={() => setShowModal(true)}>
+        <button className={"AddTask"} onClick={() => addTaskHandler}>
           +
         </button>
       </div>
@@ -111,7 +125,12 @@ const Categories = ({
       >
         <div
           className={"TaskTitle"}
-          style={task.title === "Drop Here" ? { minWidth: "200px" } : {}}
+          style={
+            task.title === "Drop Here"
+              ? { color: "black", minWidth: "200px" }
+              : {}
+          }
+          onClick={() => updateTaskHandler(task)}
         >
           {task.title}
         </div>
@@ -145,6 +164,9 @@ const Categories = ({
         showModal={showModal}
         setShowModal={setShowModal}
         categoryList={categoryList}
+        newTask={newTask}
+        updateTask={updateTask}
+        taskToBeUpdated={taskToBeUpdated}
       />
     </div>
   );

@@ -62,7 +62,17 @@ const Board = () => {
     setTaskList([...taskList, newTask]);
   };
 
-  const updateTask = (taskId, targetCategory) => {
+  const updateTask = (task) => {
+    let updatedTaskList = taskList.map((taskCheck) => {
+      if (task.id === taskCheck.id) {
+        return task;
+      }
+      return taskCheck;
+    });
+    setTaskList(updatedTaskList);
+  };
+
+  const updateTaskCategory = (taskId, targetCategory) => {
     let newTaskList = taskList.map((task, index) => {
       if (task.id === taskId) {
         task.category = targetCategory;
@@ -81,10 +91,12 @@ const Board = () => {
     <div>
       <Categories
         addTask={addTask}
+        updateTaskCategory={updateTaskCategory}
         updateTask={updateTask}
         deleteTask={deleteTask}
         categoryList={categoryList}
         taskList={taskList}
+        updateTask={updateTask}
       />
     </div>
   );
