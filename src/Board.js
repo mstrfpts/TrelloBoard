@@ -96,7 +96,6 @@ const Board = () => {
         deleteTask={deleteTask}
         categoryList={categoryList}
         taskList={taskList}
-        updateTask={updateTask}
       />
     </div>
   );

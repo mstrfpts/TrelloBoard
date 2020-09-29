@@ -25,7 +25,7 @@ const AddTaskModal = ({
         id: taskToBeUpdated.id,
       });
     }
-  }, [newTask]);
+  }, [taskToBeUpdated, newTask]);
 
   const handleClose = () => {
     setShowModal(false);
