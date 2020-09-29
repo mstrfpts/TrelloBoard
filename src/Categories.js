@@ -7,6 +7,7 @@ const Categories = ({
   categoryList,
   taskList,
   addTask,
+  updateTaskCategory,
   updateTask,
   deleteTask,
 }) => {
@@ -54,7 +55,7 @@ const Categories = ({
       params.category /*&&
       e.target !== dragNode.current*/
     ) {
-      updateTask(dragItem.current.id, params.category);
+      updateTaskCategory(dragItem.current.id, params.category);
     }
   };
 
