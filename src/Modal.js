@@ -62,7 +62,7 @@ const AddTaskModal = ({
           <Form.Control
             type="text"
             placeholder={`Enter Task Title pl`}
-            value={newTask ? `Enter Task Title` : taskDetails.title}
+            value={newTask ? `` : taskDetails.title}
             onChange={(e) => taskTitleChangeHandler(e)}
           />
         </Form.Group>
@@ -71,7 +71,7 @@ const AddTaskModal = ({
           <Form.Control
             type="text"
             placeholder={`Enter Task Description`}
-            value={newTask ? `Enter Task Description` : taskDetails.description}
+            value={newTask ? `` : taskDetails.description}
             onChange={(e) => taskDescriptionChangeHandler(e)}
           />
         </Form.Group>
