@@ -11,8 +11,8 @@ const AddTaskModal = ({
   taskToBeUpdated,
 }) => {
   const [taskDetails, setTaskDetails] = useState({
-    title: "Task Title",
-    description: "Task Description",
+    title: "",
+    description: "",
     category: categoryList[0].name,
   });
 
@@ -62,7 +62,7 @@ const AddTaskModal = ({
           <Form.Control
             type="text"
             placeholder={`Enter Task Title pl`}
-            value={newTask ? `` : taskDetails.title}
+            value={taskDetails.title}
             onChange={(e) => taskTitleChangeHandler(e)}
           />
         </Form.Group>
@@ -71,7 +71,7 @@ const AddTaskModal = ({
           <Form.Control
             type="text"
             placeholder={`Enter Task Description`}
-            value={newTask ? `` : taskDetails.description}
+            value={taskDetails.description}
             onChange={(e) => taskDescriptionChangeHandler(e)}
           />
         </Form.Group>
