@@ -4,6 +4,8 @@ import Categories from "./Categories";
 import "./Board.css";
 
 const Board = () => {
+
+  //Added static elements as placeholders for drop when the category is empty
   const staticElements = [
     { title: "Drop Here", description: " ", id: 1, category: "ToDo" },
     { title: "Drop Here", description: " ", id: 2, category: "Ongoing" },
