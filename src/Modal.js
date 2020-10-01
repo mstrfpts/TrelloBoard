@@ -16,6 +16,7 @@ const AddTaskModal = ({
     category: categoryList[0].name,
   };
   const [taskDetails, setTaskDetails] = useState(initialTaskDetails);
+  const [validated, setValidated] = useState(false);
 
   useEffect(() => {
     if (!newTask) {
@@ -31,6 +32,7 @@ const AddTaskModal = ({
   const handleClose = () => {
     setTaskDetails(initialTaskDetails);
     setShowModal(false);
+    setValidated(false);
   };
 
   const taskTitleChangeHandler = (event) => {
@@ -45,10 +47,17 @@ const AddTaskModal = ({
     setTaskDetails({ ...taskDetails, category: event.target.value });
   };
 
-  const handleClick = (task) => {
-    newTask ? addTask(taskDetails) : updateTask(task);
-    setTaskDetails(initialTaskDetails);
-    handleClose();
+  const handleSubmit = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+    } else {
+      newTask ? addTask(taskDetails) : updateTask(taskDetails);
+      setTaskDetails(initialTaskDetails);
+      handleClose();
+    }
+    setValidated(true);
   };
 
   return (
@@ -60,50 +69,55 @@ const AddTaskModal = ({
         <Modal.Body>
           Please enter you task details in the below fields
         </Modal.Body>
-        <Form.Group controlId="formBasic1">
-          <Form.Label>Task Title</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder={`Enter Task Title pl`}
-            value={taskDetails.title}
-            onChange={(e) => taskTitleChangeHandler(e)}
-          />
-        </Form.Group>
-        <Form.Group controlId="formBasic2">
-          <Form.Label>Task Description</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder={`Enter Task Description`}
-            value={taskDetails.description}
-            onChange={(e) => taskDescriptionChangeHandler(e)}
-          />
-        </Form.Group>
-        <Form.Group controlId="ControlSelect1">
-          <Form.Label>Category:</Form.Label>
-          <Form.Control
-            as="select"
-            defaultValue={newTask ? null : taskDetails.category}
-            onChange={(e) => taskCategoryChangeHandler(e)}
-          >
-            {categoryList.map((category, index) => (
-              <option key={index}>{category.name}</option>
-            ))}
-          </Form.Control>
-        </Form.Group>
 
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button
-            variant="primary"
-            onClick={() => {
-              handleClick(taskDetails);
-            }}
-          >
-            Save Changes
-          </Button>
-        </Modal.Footer>
+        <Form noValidate validated={validated} onSubmit={handleSubmit}>
+          <Form.Group controlId="formBasic1">
+            <Form.Label>Task Title</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder={`Enter Task Title pl`}
+              value={taskDetails.title}
+              onChange={(e) => taskTitleChangeHandler(e)}
+              required
+            />
+            <Form.Control.Feedback type="invalid">
+              Please provide a valid task title.
+            </Form.Control.Feedback>
+          </Form.Group>
+          <Form.Group controlId="formBasic2">
+            <Form.Label>Task Description</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder={`Enter Task Description`}
+              value={taskDetails.description}
+              onChange={(e) => taskDescriptionChangeHandler(e)}
+              required
+            />
+            <Form.Control.Feedback type="invalid">
+              Please provide a valid task description.
+            </Form.Control.Feedback>
+          </Form.Group>
+          <Form.Group controlId="ControlSelect1">
+            <Form.Label>Category:</Form.Label>
+            <Form.Control
+              as="select"
+              defaultValue={newTask ? null : taskDetails.category}
+              onChange={(e) => taskCategoryChangeHandler(e)}
+              required={false}
+            >
+              {categoryList.map((category, index) => (
+                <option key={index}>{category.name}</option>
+              ))}
+            </Form.Control>
+          </Form.Group>
+
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Close
+            </Button>
+            <Button type="submit">Save Changes</Button>
+          </Modal.Footer>
+        </Form>
       </Modal>
     </>
   );
