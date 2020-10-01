@@ -2,7 +2,8 @@
   display: flex;
   justify-content: space-around;
   background-color: rgb(19, 141, 241);
-  height: 100vh;
+  min-height: 100vh;
+  height: 100%;
 }
 
 .Board > div:nth-child(n + 2) {
