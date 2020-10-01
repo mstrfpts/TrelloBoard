@@ -44,7 +44,6 @@ const AddTaskModal = ({
   };
 
   const handleClick = (task) => {
-    console.log("derd handle click task", task);
     newTask ? addTask(taskDetails) : updateTask(task);
     handleClose();
   };
