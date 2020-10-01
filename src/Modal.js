@@ -10,11 +10,12 @@ const AddTaskModal = ({
   updateTask,
   taskToBeUpdated,
 }) => {
-  const [taskDetails, setTaskDetails] = useState({
+  const initialTaskDetails = {
     title: "",
     description: "",
     category: categoryList[0].name,
-  });
+  };
+  const [taskDetails, setTaskDetails] = useState(initialTaskDetails);
 
   useEffect(() => {
     if (!newTask) {
@@ -28,6 +29,7 @@ const AddTaskModal = ({
   }, [taskToBeUpdated, newTask]);
 
   const handleClose = () => {
+    setTaskDetails(initialTaskDetails);
     setShowModal(false);
   };
 
@@ -45,6 +47,7 @@ const AddTaskModal = ({
 
   const handleClick = (task) => {
     newTask ? addTask(taskDetails) : updateTask(task);
+    setTaskDetails(initialTaskDetails);
     handleClose();
   };
 
