@@ -45,6 +45,7 @@ const Categories = ({
       dragItem.current.category !== params.category &&
       e.target !== dragNode.current
     ) {
+      console.log("drag enter handler");
       updateTask(dragItem.current.id, params.category);
     }
   };
@@ -113,39 +114,28 @@ const Categories = ({
   };
 
   const TaskCards = ({ filteredTaskList }) => {
-    return filteredTaskList.map((task, index) => (
+    let furtherFilteredTaskList = filteredTaskList.filter((task, index) => {
+      return task.title !== "Drop Here";
+    });
+    return furtherFilteredTaskList.map((task, index) => (
       <div
-        draggable={task.title !== "Drop Here" ? true : false}
-        onDragStart={
-          task.title !== "Drop Here" ? (e) => dragStartHandler(e, task) : null
-        }
+        draggable
+        onDragStart={(e) => dragStartHandler(e, task)}
         onDragEnter={dragging ? (e) => dragEnterHandler(e, task) : null}
         key={index}
         className={dragging ? getStyle(task) : "Task"}
       >
-        <div
-          className={"TaskTitle"}
-          style={
-            task.title === "Drop Here"
-              ? { color: "black", minWidth: "200px" }
-              : {}
-          }
-          onClick={() => updateTaskHandler(task)}
-        >
+        <div className={"TaskTitle"} onClick={() => updateTaskHandler(task)}>
           {task.title}
         </div>
 
-        <div className={"TaskDesc"}>{`${
-          task.title !== "Drop Here" ? "-" : ""
-        } ${task.description}`}</div>
-        {task.title !== "Drop Here" ? (
-          <button
-            className={"TaskClose"}
-            onClick={() => taskDeleteHandler(task.id)}
-          >
-            x
-          </button>
-        ) : null}
+        <div className={"TaskDesc"}>{task.description}</div>
+        <button
+          className={"TaskClose"}
+          onClick={() => taskDeleteHandler(task.id)}
+        >
+          x
+        </button>
       </div>
     ));
   };
