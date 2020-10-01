@@ -76,7 +76,6 @@ const Categories = ({
   };
 
   const updateTaskHandler = (updateTask) => {
-    console.log("title clicked");
     setShowModal(true);
     setNewTask(false);
     setTaskToBeUpdated(updateTask);
@@ -106,7 +105,7 @@ const Categories = ({
       >
         <div className={"CategoryTitle"}>{title}</div>
         {<TaskCards filteredTaskList={filterCategoryTasks(title)} />}
-        <button className={"AddTask"} onClick={() => addTaskHandler}>
+        <button className={"AddTask"} onClick={() => addTaskHandler()}>
           +
         </button>
       </div>
