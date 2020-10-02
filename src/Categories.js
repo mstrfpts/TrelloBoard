@@ -42,19 +42,15 @@ const Categories = ({
 
   const dragEnterHandler = (e, params) => {
     if (
-      dragItem.current.category !== params.category &&
-      e.target !== dragNode.current
-    ) {
-      console.log("drag enter handler");
-      updateTask(dragItem.current.id, params.category);
-    }
-  };
-
-  const dragEnterHandler1 = (e, params) => {
-    if (
       dragItem.current.category !==
       params.category /*&&
-      e.target !== dragNode.current*/
+        e.target !== dragNode.current*/
+    ) {
+      updateTaskCategory(dragItem.current.id, params);
+    } else if (
+      /*dragItem.current.category !== params.category &&*/
+      params.id !== dragItem.current.id &&
+      e.target !== dragNode.current
     ) {
       updateTaskCategory(dragItem.current.id, params.category);
     }
@@ -91,17 +87,12 @@ const Categories = ({
     let categoryTaskIds = categoryList.filter(
       (category) => category.name === title
     )[0].tasks;
-    let defaultCategoryTasks = taskList.filter((task) => {
-      return task.id === categoryTaskIds[0];
-    });
     return (
       <div
         className={"Category"}
         onDragEnter={
-          /*categoryTaskIds.length === 1
-            ? */ (e) =>
-            dragEnterHandler1(e, defaultCategoryTasks[0])
-          //  : null
+          /*!categoryTaskIds.length ? */ (e) =>
+            dragEnterHandler(e, title) /*: null*/
         }
       >
         <div className={"CategoryTitle"}>{title}</div>

@@ -4,15 +4,8 @@ import Categories from "./Categories";
 import "./Board.css";
 
 const Board = () => {
-
   //Added static elements as placeholders for drop when the category is empty
-  const staticElements = [
-    { title: "Drop Here", description: " ", id: 1, category: "ToDo" },
-    { title: "Drop Here", description: " ", id: 2, category: "Ongoing" },
-    { title: "Drop Here", description: " ", id: 3, category: "Complete" },
-  ];
   const [taskList, setTaskList] = useLocalStorage("taskList", [
-    ...staticElements,
     {
       title: "Sample Task one ToDo",
       description: "Sample Task one Description ToDo",
@@ -77,8 +70,17 @@ const Board = () => {
   const updateTaskCategory = (taskId, targetCategory) => {
     let newTaskList = taskList.map((task, index) => {
       if (task.id === taskId) {
-        task.category = targetCategory;
+        if (task.category !== targetCategory) {
+          task.category = targetCategory;
+        } else {
+          console.log("derd, moving in same category with params", taskId);
+          console.log(
+            "derd, moving in same category with params",
+            targetCategory
+          );
+        }
       }
+
       return task;
     });
     setTaskList(newTaskList);
