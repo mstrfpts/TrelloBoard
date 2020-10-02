@@ -84,9 +84,9 @@ const Categories = ({
   };
 
   const CategoryCard = ({ title, setShowModal }) => {
-    let categoryTaskIds = categoryList.filter(
+    /*let categoryTaskIds = categoryList.filter(
       (category) => category.name === title
-    )[0].tasks;
+    )[0].tasks;*/
     return (
       <div
         className={"Category"}
