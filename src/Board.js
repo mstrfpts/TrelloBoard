@@ -4,7 +4,6 @@ import Categories from "./Categories";
 import "./Board.css";
 
 const Board = () => {
-  //Added static elements as placeholders for drop when the category is empty
   const [taskList, setTaskList] = useLocalStorage("taskList", [
     {
       title: "Sample Task one ToDo",
@@ -67,23 +66,44 @@ const Board = () => {
     setTaskList(updatedTaskList);
   };
 
-  const updateTaskCategory = (taskId, targetCategory) => {
+  const updateTaskCategory = (sourceTaskId, sourceCategory, targetCategory) => {
     let newTaskList = taskList.map((task, index) => {
-      if (task.id === taskId) {
+      if (task.id === sourceTaskId) {
         if (task.category !== targetCategory) {
           task.category = targetCategory;
         } else {
-          console.log("derd, moving in same category with params", taskId);
+          console.log(
+            "derd, moving in same category with params",
+            sourceTaskId
+          );
           console.log(
             "derd, moving in same category with params",
             targetCategory
           );
         }
       }
-
       return task;
     });
     setTaskList(newTaskList);
+  };
+
+  const updateTaskOrder = (category, draggedId, droppedId) => {
+    let categoryIndex;
+    let filteredCategory = categoryList.filter((categoryFilter, index) => {
+      if (categoryFilter.name === category) {
+        categoryIndex = index;
+      }
+      return categoryFilter.name === category;
+    });
+    let taskArray = filteredCategory[0].tasks;
+    let i = taskArray.indexOf(draggedId);
+    let j = taskArray.indexOf(droppedId);
+    [taskArray[i], taskArray[j]] = [taskArray[j], taskArray[i]];
+    //console.log("derd after interchange", taskArray);
+    //console.log("derd after interchange", categoryIndex);
+    //let categoryIndex = categoryList.findIndex((x) => x.name === category);
+    categoryList[categoryIndex].tasks = taskArray;
+    console.log("derd after interchange", categoryList);
   };
 
   const deleteTask = (taskId) => {
@@ -96,6 +116,7 @@ const Board = () => {
       <Categories
         addTask={addTask}
         updateTaskCategory={updateTaskCategory}
+        updateTaskOrder={updateTaskOrder}
         updateTask={updateTask}
         deleteTask={deleteTask}
         categoryList={categoryList}

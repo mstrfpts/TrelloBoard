@@ -8,6 +8,7 @@ const Categories = ({
   taskList,
   addTask,
   updateTaskCategory,
+  updateTaskOrder,
   updateTask,
   deleteTask,
 }) => {
@@ -20,6 +21,21 @@ const Categories = ({
   const [dragging, setDragging] = useState(false);
 
   const filterCategoryTasks = (category) => {
+    console.log("derd filter category", categoryList);
+    let orderedTasks = [];
+    let categoryTaskIds = categoryList.filter(
+      (categoryFilter) => categoryFilter.name === category
+    )[0].tasks;
+    orderedTasks = categoryTaskIds.map((categoryTaskId) => {
+      console.log("derd filter category", categoryTaskId);
+      // console.log(
+      //   "derd filered category",
+      return taskList.findIndex((x) => x.id === categoryTaskId);
+      // );
+      //return categoryList.findIndex((x) => x.name === categoryTaskId);
+    });
+    console.log("derd filter category", categoryTaskIds);
+    console.log("derd filter category", orderedTasks);
     return taskList.filter((task) => {
       return task.category === category;
     });
@@ -40,19 +56,23 @@ const Categories = ({
     dragNode.current = null;
   };
 
-  const dragEnterHandler = (e, params) => {
-    if (
-      dragItem.current.category !==
-      params.category /*&&
-        e.target !== dragNode.current*/
-    ) {
-      updateTaskCategory(dragItem.current.id, params);
-    } else if (
-      /*dragItem.current.category !== params.category &&*/
-      params.id !== dragItem.current.id &&
-      e.target !== dragNode.current
-    ) {
-      updateTaskCategory(dragItem.current.id, params.category);
+  const dragEnterHandler = (e, params, source) => {
+    if (source === "category") {
+      if (params !== dragItem.current.category) {
+        console.log("derd, entered category update task", dragItem.current);
+        updateTaskCategory(
+          dragItem.current.id,
+          dragItem.current.category,
+          params
+        );
+      }
+    } else if (source === "task") {
+      if (params.id !== dragItem.current.id && e.target !== dragNode.current) {
+        console.log("task function call params target", params);
+        console.log("task function call params source", dragItem.current.id);
+        //updateTaskCategory(dragItem.current.id, params.category);
+        updateTaskOrder(params.category, dragItem.current.id, params.id);
+      }
     }
   };
 
@@ -90,10 +110,7 @@ const Categories = ({
     return (
       <div
         className={"Category"}
-        onDragEnter={
-          /*!categoryTaskIds.length ? */ (e) =>
-            dragEnterHandler(e, title) /*: null*/
-        }
+        onDragEnter={(e) => dragEnterHandler(e, title, "category")}
       >
         <div className={"CategoryTitle"}>{title}</div>
         {<TaskCards filteredTaskList={filterCategoryTasks(title)} />}
@@ -105,14 +122,11 @@ const Categories = ({
   };
 
   const TaskCards = ({ filteredTaskList }) => {
-    let furtherFilteredTaskList = filteredTaskList.filter((task, index) => {
-      return task.title !== "Drop Here";
-    });
-    return furtherFilteredTaskList.map((task, index) => (
+    return filteredTaskList.map((task, index) => (
       <div
         draggable
         onDragStart={(e) => dragStartHandler(e, task)}
-        onDragEnter={dragging ? (e) => dragEnterHandler(e, task) : null}
+        onDragEnter={dragging ? (e) => dragEnterHandler(e, task, "task") : null}
         key={index}
         className={dragging ? getStyle(task) : "Task"}
       >
