@@ -99,9 +99,6 @@ const Board = () => {
     let i = taskArray.indexOf(draggedId);
     let j = taskArray.indexOf(droppedId);
     [taskArray[i], taskArray[j]] = [taskArray[j], taskArray[i]];
-    //console.log("derd after interchange", taskArray);
-    //console.log("derd after interchange", categoryIndex);
-    //let categoryIndex = categoryList.findIndex((x) => x.name === category);
     categoryList[categoryIndex].tasks = taskArray;
     console.log("derd after interchange", categoryList);
   };
