@@ -21,28 +21,16 @@ const Categories = ({
   const [dragging, setDragging] = useState(false);
 
   const filterCategoryTasks = (category) => {
-    console.log("derd filter category", categoryList);
     let categoryTaskIds = categoryList.filter(
       (categoryFilter) => categoryFilter.name === category
     )[0].tasks;
     let orderedTaskIndices = categoryTaskIds.map((categoryTaskId) => {
-      console.log("derd filter category", categoryTaskId);
-      // console.log(
-      //   "derd filered category",
       return taskList.findIndex((x) => x.id === categoryTaskId);
-      // );
-      //return categoryList.findIndex((x) => x.name === categoryTaskId);
     });
-    console.log("derd filter category", categoryTaskIds);
-    console.log("derd filter category", orderedTaskIndices);
     let orderedTasks = orderedTaskIndices.map((orderedTaskIndex) => {
       return taskList[orderedTaskIndex];
     });
-    console.log("derd filter category", orderedTasks);
     return orderedTasks;
-    /*return taskList.filter((task) => {
-      return task.category === category;
-    });*/
   };
 
   const dragStartHandler = (e, params) => {
