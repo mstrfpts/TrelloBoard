@@ -17,6 +17,7 @@ const Categories = ({
   const [taskToBeUpdated, setTaskToBeUpdated] = useState();
   const dragItem = useRef();
   const dragNode = useRef();
+  const [dragEnterId, setDragEnterId] = useState(-1);
 
   const [dragging, setDragging] = useState(false);
 
@@ -50,12 +51,12 @@ const Categories = ({
     dragNode.current.removeEventListener("dragend", dragEndHandler);
     dragItem.current = null;
     dragNode.current = null;
+    setdragEnterId(-1);
   };
 
   const dragEnterHandler = (e, params, source) => {
     if (source === "category") {
       if (params !== dragItem.current.category) {
-        console.log("derd, entered category update task", dragItem.current);
         updateTaskCategory(
           dragItem.current.id,
           dragItem.current.category,
@@ -63,10 +64,12 @@ const Categories = ({
         );
       }
     } else if (source === "task") {
-      if (params.id !== dragItem.current.id && e.target !== dragNode.current) {
-        console.log("task function call params target", params);
-        console.log("task function call params source", dragItem.current.id);
-        //updateTaskCategory(dragItem.current.id, params.category);
+      if (
+        dragEnterId !== params.id &&
+        params.id !== dragItem.current.id &&
+        e.target !== dragNode.current
+      ) {
+        setDragEnterId(params.id);
         updateTaskOrder(params.category, dragItem.current.id, params.id);
       }
     }
@@ -100,9 +103,6 @@ const Categories = ({
   };
 
   const CategoryCard = ({ title, setShowModal }) => {
-    /*let categoryTaskIds = categoryList.filter(
-      (category) => category.name === title
-    )[0].tasks;*/
     return (
       <div
         className={"Category"}
