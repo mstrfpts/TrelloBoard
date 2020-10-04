@@ -51,7 +51,7 @@ const Categories = ({
     dragNode.current.removeEventListener("dragend", dragEndHandler);
     dragItem.current = null;
     dragNode.current = null;
-    setdragEnterId(-1);
+    setDragEnterId(-1);
   };
 
   const dragEnterHandler = (e, params, source) => {

@@ -124,7 +124,6 @@ const Board = () => {
     let j = taskArray.indexOf(droppedId);
     [taskArray[i], taskArray[j]] = [taskArray[j], taskArray[i]];
     categoryList[categoryIndex].tasks = taskArray;
-    console.log("derd after interchange", categoryList);
   };
 
   const deleteTask = (taskId) => {
