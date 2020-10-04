@@ -12,6 +12,7 @@ const Categories = ({
   updateTask,
   deleteTask,
   searchString,
+  board,
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [newTask, setNewTask] = useState(true);
@@ -49,7 +50,10 @@ const Categories = ({
     });
 
     orderedTasks = orderedTasks.filter((orderedTask) => {
-      return orderedTask;
+      console.log("derd filtering", orderedTask.boardId);
+      console.log("derd filtering", board);
+      //part 2 of this filter is to filter out null insertions from line 45
+      return orderedTask.boardId === board && orderedTask;
     });
 
     if (typeof orderedTasks[0] === "undefined") {
