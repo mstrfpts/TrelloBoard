@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useLocalStorage } from "./CustomHooks";
 import Categories from "./Categories";
 import "./Board.css";
@@ -31,20 +31,11 @@ const Board = () => {
     return filteredTasks.map((filteredTask) => filteredTask.id);
   };
 
-  const [categoryList, setCategoryList] = useLocalStorage("categoryList", [
+  let categoryList = [
     { name: "ToDo", id: 1, tasks: findCategoryTasks("ToDo") },
     { name: "Ongoing", id: 2, tasks: findCategoryTasks("Ongoing") },
     { name: "Complete", id: 3, tasks: findCategoryTasks("Complete") },
-  ]);
-
-  useEffect(() => {
-    let newCategoryList = categoryList.map((categoryFilter) => {
-      categoryFilter.tasks = findCategoryTasks(categoryFilter.name);
-      return categoryFilter;
-    });
-    setCategoryList(newCategoryList);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [taskList]);
+  ];
 
   const findFreeId = (array) => {
     const sortedArray = array.slice().sort(function (a, b) {
@@ -76,20 +67,19 @@ const Board = () => {
   };
 
   const updateTaskCategory = (sourceTaskId, sourceCategory, targetCategory) => {
-    console.log("derd, in update");
     let newTaskList = taskList.map((task, index) => {
       if (task.id === sourceTaskId) {
         if (task.category !== targetCategory) {
           task.category = targetCategory;
         } else {
-          /*console.log(
+          console.log(
             "derd, moving in same category with params",
             sourceTaskId
           );
           console.log(
             "derd, moving in same category with params",
             targetCategory
-          );*/
+          );
         }
       }
       return task;
@@ -99,7 +89,6 @@ const Board = () => {
 
   const updateTaskOrder = (category, draggedId, droppedId) => {
     let categoryIndex;
-    let newCategoryList;
     let filteredCategory = categoryList.filter((categoryFilter, index) => {
       if (categoryFilter.name === category) {
         categoryIndex = index;
@@ -110,9 +99,8 @@ const Board = () => {
     let i = taskArray.indexOf(draggedId);
     let j = taskArray.indexOf(droppedId);
     [taskArray[i], taskArray[j]] = [taskArray[j], taskArray[i]];
-    newCategoryList = categoryList;
-    newCategoryList[categoryIndex].tasks = taskArray;
-    setCategoryList(newCategoryList);
+    categoryList[categoryIndex].tasks = taskArray;
+    console.log("derd after interchange", categoryList);
   };
 
   const deleteTask = (taskId) => {
