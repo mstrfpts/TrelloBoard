@@ -31,7 +31,11 @@ const Categories = ({
     let orderedTasks = orderedTaskIndices.map((orderedTaskIndex) => {
       return taskList[orderedTaskIndex];
     });
-    return orderedTasks;
+    if (typeof orderedTasks[0] === "undefined") {
+      return [];
+    } else {
+      return orderedTasks;
+    }
   };
 
   const dragStartHandler = (e, params) => {

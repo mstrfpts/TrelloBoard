@@ -26,8 +26,11 @@ const AddTaskModal = ({
         category: taskToBeUpdated.category,
         id: taskToBeUpdated.id,
       });
+    } else {
+      setTaskDetails(initialTaskDetails);
     }
-  }, [taskToBeUpdated, newTask]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [taskToBeUpdated, newTask, showModal]);
 
   const handleClose = () => {
     setTaskDetails(initialTaskDetails);
@@ -75,7 +78,7 @@ const AddTaskModal = ({
             <Form.Label>Task Title</Form.Label>
             <Form.Control
               type="text"
-              placeholder={`Enter Task Title pl`}
+              placeholder={`Enter Task Title`}
               value={taskDetails.title}
               onChange={(e) => taskTitleChangeHandler(e)}
               required

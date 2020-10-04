@@ -27,8 +27,19 @@ const Board = () => {
 
   //Functions
   const findCategoryTasks = (category) => {
-    let filteredTasks = taskList.filter((task) => task.category === category);
+    let filteredTasks = taskList.filter((task) => {
+      return task.category === category;
+    });
+
     return filteredTasks.map((filteredTask) => filteredTask.id);
+  };
+
+  const updateCategoryTasks = () => {
+    let newCategoryList = categoryList.map((categoryFilter) => {
+      categoryFilter.tasks = findCategoryTasks(categoryFilter.name);
+      return categoryFilter;
+    });
+    setCategoryList(newCategoryList);
   };
 
   const [categoryList, setCategoryList] = useLocalStorage("categoryList", [
@@ -38,13 +49,15 @@ const Board = () => {
   ]);
 
   useEffect(() => {
-    let newCategoryList = categoryList.map((categoryFilter) => {
-      categoryFilter.tasks = findCategoryTasks(categoryFilter.name);
-      return categoryFilter;
-    });
-    setCategoryList(newCategoryList);
+    updateCategoryTasks();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [taskList]);
+
+  // let categoryList = [
+  //   { name: "ToDo", id: 1, tasks: findCategoryTasks("ToDo") },
+  //   { name: "Ongoing", id: 2, tasks: findCategoryTasks("Ongoing") },
+  //   { name: "Complete", id: 3, tasks: findCategoryTasks("Complete") },
+  // ];
 
   const findFreeId = (array) => {
     const sortedArray = array.slice().sort(function (a, b) {
@@ -76,13 +89,13 @@ const Board = () => {
   };
 
   const updateTaskCategory = (sourceTaskId, sourceCategory, targetCategory) => {
-    console.log("derd, in update");
     let newTaskList = taskList.map((task, index) => {
       if (task.id === sourceTaskId) {
         if (task.category !== targetCategory) {
           task.category = targetCategory;
         } else {
-          /*console.log(
+          /*
+          console.log(
             "derd, moving in same category with params",
             sourceTaskId
           );
@@ -94,6 +107,7 @@ const Board = () => {
       }
       return task;
     });
+    updateCategoryTasks();
     setTaskList(newTaskList);
   };
 
