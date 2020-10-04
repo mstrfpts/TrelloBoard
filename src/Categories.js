@@ -11,6 +11,7 @@ const Categories = ({
   updateTaskOrder,
   updateTask,
   deleteTask,
+  searchString,
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [newTask, setNewTask] = useState(true);
@@ -29,8 +30,28 @@ const Categories = ({
       return taskList.findIndex((x) => x.id === categoryTaskId);
     });
     let orderedTasks = orderedTaskIndices.map((orderedTaskIndex) => {
-      return taskList[orderedTaskIndex];
+      if (searchString !== "") {
+        if (
+          taskList[orderedTaskIndex].title
+            .toLowerCase()
+            .includes(searchString) ||
+          taskList[orderedTaskIndex].description
+            .toLowerCase()
+            .includes(searchString)
+        ) {
+          return taskList[orderedTaskIndex];
+        } else {
+          return null;
+        }
+      } else {
+        return taskList[orderedTaskIndex];
+      }
     });
+
+    orderedTasks = orderedTasks.filter((orderedTask) => {
+      return orderedTask;
+    });
+
     if (typeof orderedTasks[0] === "undefined") {
       return [];
     } else {

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocalStorage } from "./CustomHooks";
 import Categories from "./Categories";
 import "./Board.css";
@@ -24,6 +24,8 @@ const Board = () => {
       category: "Complete",
     },
   ]);
+
+  const [searchString, setSearchString] = useState("");
 
   //Functions
   const findCategoryTasks = (category) => {
@@ -131,8 +133,20 @@ const Board = () => {
     setTaskList(newTaskList);
   };
 
+  const searchHandler = (event) => {
+    setSearchString(event.target.value);
+  };
+
   return (
     <div>
+      <div style={{ backgroundColor: "rgb(19, 141, 241)", padding: "5px" }}>
+        <input
+          style={{ margin: "5px" }}
+          onChange={searchHandler}
+          value={searchString}
+          placeholder={"Search Task"}
+        ></input>
+      </div>
       <Categories
         addTask={addTask}
         updateTaskCategory={updateTaskCategory}
@@ -141,6 +155,7 @@ const Board = () => {
         deleteTask={deleteTask}
         categoryList={categoryList}
         taskList={taskList}
+        searchString={searchString}
       />
     </div>
   );
