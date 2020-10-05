@@ -56,7 +56,7 @@ const Board = () => {
   const [boards, setBoards] = useLocalStorage("boardList", [
     { name: "Board One", id: 1 },
   ]);
-  const [boardSelected, setBoardSelected] = useState(1);
+  const [boardSelected, setBoardSelected] = useState(boards[0]);
 
   useEffect(() => {
     updateCategoryTasks();
@@ -147,15 +147,15 @@ const Board = () => {
 
   const boardSelectHandler = (event) => {
     if (event.target.value === "New Board") {
-      console.log("create Board");
       let boardId = findFreeId(boards);
       setBoards([...boards, { name: "Board " + boardId, id: boardId }]);
+      setBoardSelected({ name: "Board " + boardId, id: boardId });
     } else {
-      console.log("chosen board is ", event.target.value);
       boards.map((board) => {
         if (board.name === event.target.value) {
-          setBoardSelected(board.id);
+          setBoardSelected(board);
         }
+        return board;
       });
     }
   };
@@ -169,16 +169,24 @@ const Board = () => {
           value={searchString}
           placeholder={"Search Task"}
         ></input>
-        <select onChange={boardSelectHandler}>
+        <select
+          value={boardSelected.name}
+          onChange={boardSelectHandler}
+          name={"boards"}
+          id={"boards"}
+        >
           {boards.map((board, index) => (
-            <option key={index}>{board.name}</option>
+            <option key={index} value={board.name}>
+              {board.name}
+            </option>
           ))}
           <option>{"New Board"}</option>
         </select>
       </div>
 
       <Categories
-        board={boardSelected}
+        boardSelected={boardSelected}
+        boards={boards}
         addTask={addTask}
         updateTaskCategory={updateTaskCategory}
         updateTaskOrder={updateTaskOrder}

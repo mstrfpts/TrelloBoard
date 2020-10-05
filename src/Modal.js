@@ -9,11 +9,14 @@ const AddTaskModal = ({
   newTask,
   updateTask,
   taskToBeUpdated,
+  boards,
+  boardSelected,
 }) => {
   const initialTaskDetails = {
     title: "",
     description: "",
     category: categoryList[0].name,
+    boardId: boardSelected.id,
   };
   const [taskDetails, setTaskDetails] = useState(initialTaskDetails);
   const [validated, setValidated] = useState(false);
