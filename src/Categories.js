@@ -12,6 +12,8 @@ const Categories = ({
   updateTask,
   deleteTask,
   searchString,
+  boardSelected,
+  boards,
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [newTask, setNewTask] = useState(true);
@@ -49,7 +51,8 @@ const Categories = ({
     });
 
     orderedTasks = orderedTasks.filter((orderedTask) => {
-      return orderedTask;
+      //part 1 of this filter is to filter out null insertions from line 45
+      return orderedTask && orderedTask.boardId === boardSelected.id;
     });
 
     if (typeof orderedTasks[0] === "undefined") {
@@ -179,6 +182,8 @@ const Categories = ({
         newTask={newTask}
         updateTask={updateTask}
         taskToBeUpdated={taskToBeUpdated}
+        boardSelected={boardSelected}
+        boards={boards}
       />
     </div>
   );

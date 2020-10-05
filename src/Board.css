@@ -1,13 +1,40 @@
+.BaseContainer {
+}
+
+.FilterContainer {
+  background-color: #97a8c5;
+  padding: 5px;
+}
+
+.Header {
+  font-weight: bolder;
+  font-size: large;
+  text-align: center;
+  border-bottom: solid 1px darkblue;
+}
+
 .Board {
   display: flex;
   justify-content: space-around;
   background-color: rgb(19, 141, 241);
-  min-height: 100vh;
+  min-height: 92.8vh;
   height: 100%;
 }
 
 .Board > div:nth-child(n + 2) {
   margin-left: 0px;
+}
+
+.BoardSelect {
+  margin: 5px 5px 0 5px;
+  padding: 2px;
+  border-radius: 5px;
+  width: 160px;
+}
+
+.BoardInput {
+  margin: 5px 5px 0 5px;
+  width: 160px;
 }
 
 .Category {
@@ -67,4 +94,21 @@
   top: 2px;
   right: 2px;
   border: none;
+}
+
+@media (min-width: 800px) {
+  .BaseContainer {
+    display: flex;
+    min-height: 98vh;
+  }
+
+  .Board {
+    min-height: 98vh;
+  }
+  .BoardSelect {
+    margin-top: 10px;
+  }
+  .BoardInput {
+    margin-top: 10px;
+  }
 }

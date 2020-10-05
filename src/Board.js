@@ -9,18 +9,21 @@ const Board = () => {
       title: "Sample Task one ToDo",
       description: "Sample Task one Description ToDo",
       id: 4,
+      boardId: 1,
       category: "ToDo",
     },
     {
       title: "Sample Task one Ongoing",
       description: "Sample Task one Description Ongoing",
       id: 5,
+      boardId: 1,
       category: "Ongoing",
     },
     {
       title: "Sample Task one Complete",
       description: "Sample Task one Description Complete",
       id: 6,
+      boardId: 1,
       category: "Complete",
     },
   ]);
@@ -49,6 +52,11 @@ const Board = () => {
     { name: "Ongoing", id: 2, tasks: findCategoryTasks("Ongoing") },
     { name: "Complete", id: 3, tasks: findCategoryTasks("Complete") },
   ]);
+
+  const [boards, setBoards] = useLocalStorage("boardList", [
+    { name: "Board One", id: 1 },
+  ]);
+  const [boardSelected, setBoardSelected] = useState(boards[0]);
 
   useEffect(() => {
     updateCategoryTasks();
@@ -137,17 +145,50 @@ const Board = () => {
     setSearchString(event.target.value);
   };
 
+  const boardSelectHandler = (event) => {
+    if (event.target.value === "New Board") {
+      let boardId = findFreeId(boards);
+      setBoards([...boards, { name: "Board " + boardId, id: boardId }]);
+      setBoardSelected({ name: "Board " + boardId, id: boardId });
+    } else {
+      boards.map((board) => {
+        if (board.name === event.target.value) {
+          setBoardSelected(board);
+        }
+        return board;
+      });
+    }
+  };
+
   return (
-    <div>
-      <div style={{ backgroundColor: "rgb(19, 141, 241)", padding: "5px" }}>
+    <div className={"BaseContainer"}>
+      <div className={"FilterContainer"}>
+        <div className={"Header"}>{boardSelected.name}</div>
+        <select
+          className={"BoardSelect"}
+          value={boardSelected.name}
+          onChange={boardSelectHandler}
+          name={"boards"}
+          id={"boards"}
+        >
+          {boards.map((board, index) => (
+            <option key={index} value={board.name}>
+              {board.name}
+            </option>
+          ))}
+          <option>{"New Board"}</option>
+        </select>
         <input
-          style={{ margin: "5px" }}
+          className={"BoardInput"}
           onChange={searchHandler}
           value={searchString}
           placeholder={"Search Task"}
         ></input>
       </div>
+
       <Categories
+        boardSelected={boardSelected}
+        boards={boards}
         addTask={addTask}
         updateTaskCategory={updateTaskCategory}
         updateTaskOrder={updateTaskOrder}
