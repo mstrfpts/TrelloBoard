@@ -161,15 +161,11 @@ const Board = () => {
   };
 
   return (
-    <div>
-      <div style={{ backgroundColor: "rgb(19, 141, 241)", padding: "5px" }}>
-        <input
-          style={{ margin: "5px" }}
-          onChange={searchHandler}
-          value={searchString}
-          placeholder={"Search Task"}
-        ></input>
+    <div className={"BaseContainer"}>
+      <div className={"FilterContainer"}>
+        <div className={"Header"}>{boardSelected.name}</div>
         <select
+          className={"BoardSelect"}
           value={boardSelected.name}
           onChange={boardSelectHandler}
           name={"boards"}
@@ -182,6 +178,12 @@ const Board = () => {
           ))}
           <option>{"New Board"}</option>
         </select>
+        <input
+          className={"BoardInput"}
+          onChange={searchHandler}
+          value={searchString}
+          placeholder={"Search Task"}
+        ></input>
       </div>
 
       <Categories
