@@ -11,11 +11,12 @@ const AddTaskModal = ({
   taskToBeUpdated,
   boards,
   boardSelected,
+  addTaskCategory,
 }) => {
   const initialTaskDetails = {
     title: "",
     description: "",
-    category: categoryList[0].name,
+    category: addTaskCategory,
     boardId: boardSelected.id,
   };
   const [taskDetails, setTaskDetails] = useState(initialTaskDetails);
@@ -110,12 +111,14 @@ const AddTaskModal = ({
               <Form.Label>Category:</Form.Label>
               <Form.Control
                 as="select"
-                defaultValue={newTask ? null : taskDetails.category}
+                value={taskDetails.category}
                 onChange={(e) => taskCategoryChangeHandler(e)}
                 required={false}
               >
                 {categoryList.map((category, index) => (
-                  <option key={index}>{category.name}</option>
+                  <option key={index} value={category.name}>
+                    {category.name}
+                  </option>
                 ))}
               </Form.Control>
             </Form.Group>
