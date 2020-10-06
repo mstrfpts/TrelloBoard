@@ -9,7 +9,7 @@
 .Header {
   font-weight: bolder;
   font-size: large;
-  text-align: center;
+  margin-left: 6px;
   border-bottom: solid 1px darkblue;
 }
 
