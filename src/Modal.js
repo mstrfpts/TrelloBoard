@@ -24,10 +24,11 @@ const AddTaskModal = ({
   useEffect(() => {
     if (!newTask) {
       setTaskDetails({
-        title: newTask ? "Task Title" : taskToBeUpdated.title,
-        description: newTask ? "Task Description" : taskToBeUpdated.description,
+        title: taskToBeUpdated.title,
+        description: taskToBeUpdated.description,
         category: taskToBeUpdated.category,
         id: taskToBeUpdated.id,
+        boardId: boardSelected.id,
       });
     } else {
       setTaskDetails(initialTaskDetails);
@@ -55,6 +56,7 @@ const AddTaskModal = ({
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
+
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
@@ -69,61 +71,63 @@ const AddTaskModal = ({
   return (
     <>
       <Modal show={showModal} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>{newTask ? "New Task" : "Update Task"}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          Please enter you task details in the below fields
-        </Modal.Body>
+        <div className={"ModalContainer"}>
+          <Modal.Header closeButton>
+            <Modal.Title>{newTask ? "New Task" : "Update Task"}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            Please enter you task details in the below fields
+          </Modal.Body>
 
-        <Form noValidate validated={validated} onSubmit={handleSubmit}>
-          <Form.Group controlId="formBasic1">
-            <Form.Label>Task Title</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder={`Enter Task Title`}
-              value={taskDetails.title}
-              onChange={(e) => taskTitleChangeHandler(e)}
-              required
-            />
-            <Form.Control.Feedback type="invalid">
-              Please provide a valid task title.
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group controlId="formBasic2">
-            <Form.Label>Task Description</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder={`Enter Task Description`}
-              value={taskDetails.description}
-              onChange={(e) => taskDescriptionChangeHandler(e)}
-              required
-            />
-            <Form.Control.Feedback type="invalid">
-              Please provide a valid task description.
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group controlId="ControlSelect1">
-            <Form.Label>Category:</Form.Label>
-            <Form.Control
-              as="select"
-              defaultValue={newTask ? null : taskDetails.category}
-              onChange={(e) => taskCategoryChangeHandler(e)}
-              required={false}
-            >
-              {categoryList.map((category, index) => (
-                <option key={index}>{category.name}</option>
-              ))}
-            </Form.Control>
-          </Form.Group>
+          <Form noValidate validated={validated} onSubmit={handleSubmit}>
+            <Form.Group controlId="formBasic1">
+              <Form.Label>Task Title *</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder={`Enter Task Title`}
+                value={taskDetails.title}
+                onChange={(e) => taskTitleChangeHandler(e)}
+                required
+              />
+              <Form.Control.Feedback type="invalid">
+                Please provide a valid task title.
+              </Form.Control.Feedback>
+            </Form.Group>
+            <Form.Group controlId="formBasic2">
+              <Form.Label>Task Description *</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder={`Enter Task Description`}
+                value={taskDetails.description}
+                onChange={(e) => taskDescriptionChangeHandler(e)}
+                required
+              />
+              <Form.Control.Feedback type="invalid">
+                Please provide a valid task description.
+              </Form.Control.Feedback>
+            </Form.Group>
+            <Form.Group controlId="ControlSelect1">
+              <Form.Label>Category:</Form.Label>
+              <Form.Control
+                as="select"
+                defaultValue={newTask ? null : taskDetails.category}
+                onChange={(e) => taskCategoryChangeHandler(e)}
+                required={false}
+              >
+                {categoryList.map((category, index) => (
+                  <option key={index}>{category.name}</option>
+                ))}
+              </Form.Control>
+            </Form.Group>
 
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button>
-            <Button type="submit">Save Changes</Button>
-          </Modal.Footer>
-        </Form>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleClose}>
+                Close
+              </Button>
+              <Button type="submit">Save Changes</Button>
+            </Modal.Footer>
+          </Form>
+        </div>
       </Modal>
     </>
   );

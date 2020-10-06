@@ -41,7 +41,7 @@
   background-color: lightgrey;
   margin: 5px;
   padding: 5px;
-  min-width: 31vw;
+  min-width: 24vw;
   display: flex;
   flex-direction: column;
   flex: auto;
@@ -94,6 +94,10 @@
   top: 2px;
   right: 2px;
   border: none;
+}
+
+.ModalContainer {
+  padding: 10px;
 }
 
 @media (min-width: 800px) {
