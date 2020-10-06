@@ -23,6 +23,7 @@ const Categories = ({
   const [dragEnterId, setDragEnterId] = useState(-1);
 
   const [dragging, setDragging] = useState(false);
+  const [addTaskCategory, setAddTaskCategory] = useState(categoryList[0].name);
 
   const filterCategoryTasks = (category) => {
     let categoryTaskIds = categoryList.filter(
@@ -121,9 +122,10 @@ const Categories = ({
     setTaskToBeUpdated(updateTask);
   };
 
-  const addTaskHandler = () => {
+  const addTaskHandler = (category) => {
     setShowModal(true);
     setNewTask(true);
+    setAddTaskCategory(category);
   };
 
   const CategoryCard = ({ title, setShowModal }) => {
@@ -134,7 +136,7 @@ const Categories = ({
       >
         <div className={"CategoryTitle"}>{title}</div>
         {<TaskCards filteredTaskList={filterCategoryTasks(title)} />}
-        <button className={"AddTask"} onClick={() => addTaskHandler()}>
+        <button className={"AddTask"} onClick={() => addTaskHandler(title)}>
           +
         </button>
       </div>
@@ -179,6 +181,7 @@ const Categories = ({
         showModal={showModal}
         setShowModal={setShowModal}
         categoryList={categoryList}
+        addTaskCategory={addTaskCategory}
         newTask={newTask}
         updateTask={updateTask}
         taskToBeUpdated={taskToBeUpdated}
