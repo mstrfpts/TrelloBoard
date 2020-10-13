@@ -10,6 +10,7 @@ const Board = () => {
       description: "Sample Task one Description ToDo",
       id: 4,
       boardId: 1,
+      orderNo: 1,
       category: "ToDo",
     },
     {
@@ -17,6 +18,7 @@ const Board = () => {
       description: "Sample Task one Description Ongoing",
       id: 5,
       boardId: 1,
+      orderNo: 1,
       category: "Ongoing",
     },
     {
@@ -24,6 +26,7 @@ const Board = () => {
       description: "Sample Task one Description Complete",
       id: 6,
       boardId: 1,
+      orderNo: 1,
       category: "Complete",
     },
   ]);
@@ -31,12 +34,51 @@ const Board = () => {
   const [searchString, setSearchString] = useState("");
 
   //Functions
+
+  const findFreeId = (array) => {
+    const sortedArray = array.slice().sort(function (a, b) {
+      return a.id - b.id;
+    });
+    let previousId = 0;
+    for (let element of sortedArray) {
+      if (element.id !== previousId + 1) {
+        return previousId + 1;
+      }
+      previousId = element.id;
+    }
+    return previousId + 1;
+  };
+
+  const findOrderNo = (category) => {
+    let filteredCategoryTask = taskList.filter(
+      (filteredTask) => filteredTask.category === category
+    );
+    if (filteredCategoryTask.length > 0) {
+      let lastTask;
+      lastTask = filteredCategoryTask.reduce((prev, current) => {
+        return prev.orderNo > current.orderNo ? prev : current;
+      }); //returns object
+      return lastTask.orderNo;
+    } else {
+      return 0;
+    }
+  };
+
   const findCategoryTasks = (category) => {
     let filteredTasks = taskList.filter((task) => {
       return task.category === category;
     });
 
-    return filteredTasks.map((filteredTask) => filteredTask.id);
+    //let filteredTaskIds = filteredTasks.map((filteredTask) => filteredTask.id);
+
+    let filteredTaskIds1 = [];
+    for (let i = 1; i <= findOrderNo(category); i++) {
+      let index = filteredTasks.findIndex((x) => x.orderNo === i);
+      if (index > -1 && filteredTasks[index])
+        filteredTaskIds1.push(filteredTasks[index].id);
+    }
+
+    return filteredTaskIds1;
   };
 
   const updateCategoryTasks = () => {
@@ -69,22 +111,12 @@ const Board = () => {
   //   { name: "Complete", id: 3, tasks: findCategoryTasks("Complete") },
   // ];
 
-  const findFreeId = (array) => {
-    const sortedArray = array.slice().sort(function (a, b) {
-      return a.id - b.id;
-    });
-    let previousId = 0;
-    for (let element of sortedArray) {
-      if (element.id !== previousId + 1) {
-        return previousId + 1;
-      }
-      previousId = element.id;
-    }
-    return previousId + 1;
-  };
-
   const addTask = (task) => {
-    let newTask = { ...task, id: findFreeId(taskList) };
+    let newTask = {
+      ...task,
+      id: findFreeId(taskList),
+      orderNo: findOrderNo(task.category) + 1,
+    };
     setTaskList([...taskList, newTask]);
   };
 
@@ -103,16 +135,15 @@ const Board = () => {
       if (task.id === sourceTaskId) {
         if (task.category !== targetCategory) {
           task.category = targetCategory;
+          let targetCategoryTasksCount = taskList.filter(
+            (filteredTask) => filteredTask.category === targetCategory
+          ).length;
+          task.orderNo = targetCategoryTasksCount; //findOrderNo(targetCategory) + 1;
         } else {
           /*
-          console.log(
-            "derd, moving in same category with params",
-            sourceTaskId
-          );
-          console.log(
-            "derd, moving in same category with params",
-            targetCategory
-          );*/
+          movements of order within a category are taken care off by 
+          task in dragenter action in categories file.
+          */
         }
       }
       return task;
@@ -133,7 +164,22 @@ const Board = () => {
     let i = taskArray.indexOf(draggedId);
     let j = taskArray.indexOf(droppedId);
     [taskArray[i], taskArray[j]] = [taskArray[j], taskArray[i]];
-    categoryList[categoryIndex].tasks = taskArray;
+    let updatedCategoryList = categoryList;
+
+    //categoryList[categoryIndex].tasks = taskArray;
+    updatedCategoryList[categoryIndex].tasks = taskArray;
+    setCategoryList(updatedCategoryList);
+
+    let newTaskListDrag = [...taskList];
+    let draggedTaskIndex = taskList.findIndex((x) => x.id === draggedId);
+    let droppedTaskIndex = taskList.findIndex((x) => x.id === droppedId);
+
+    let currentDroppedTaskOrderNo = taskList[droppedTaskIndex].orderNo;
+    let currentDraggedTaskOrderNo = taskList[draggedTaskIndex].orderNo;
+
+    newTaskListDrag[draggedTaskIndex].orderNo = currentDroppedTaskOrderNo;
+    newTaskListDrag[droppedTaskIndex].orderNo = currentDraggedTaskOrderNo;
+    setTaskList(newTaskListDrag);
   };
 
   const deleteTask = (taskId) => {
